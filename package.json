@@ -1,37 +1,45 @@
 {
   "name": "react-native-peach-mobile",
   "title": "React Native Peach Mobile",
-  "version": "1.0.0",
-  "description": "TODO",
+  "version": "0.0.1",
+  "description": "A React Native library for Peach Payments ",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-peach-mobile.git",
-    "baseUrl": "https://github.com/github_account/react-native-peach-mobile"
+    "url": "git+https://github.com/Codehesion-ZA/react-native-peach-mobile.git",
+    "baseUrl": "https://github.com/Codehesion-ZA/react-native-peach-mobile"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "payment gateway",
+    "peach payments",
+    "payments"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Craig van Heerden",
+    "email": "crvheerden@gmail.com"
   },
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
     "react": "^16.8.1",
-    "react-native": ">=0.60.0 <1.0.x"
+    "react-native": ">=0.60.0 <1.0.x",
+    "react-native-webview": "^7.0.6"
   },
   "devDependencies": {
     "react": "^16.8.3",
-    "react-native": "^0.60.0"
+    "react-native": "^0.60.0",
+    "react-native-webview": "^7.0.6"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "lodash": "^4.17.15"
+    "axios": "0.18.0",
+    "lodash": "^4.17.15",
+    "query-string": "^6.8.3",
+    "prop-types": "^15.7.2",
+    "react-native-modal": "^11.3.1"
   }
 }
