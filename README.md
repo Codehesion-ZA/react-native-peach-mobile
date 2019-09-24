@@ -194,6 +194,90 @@ if (response.data.result.code && successCodesPattern.test(response.data.result.c
 
 ## Available Props
 
+| Name                | Type             | Default                        | Description                                                                                                                                |
+| ------------------- | ---------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| mode                | string           | 'test'                         | The mode SDK payment provider should operate in. Can be `test` or `live`.                                                                  |
+| urlScheme           | string           | **Required**                   | The scheme that is used when redirecting after 3D secure has completed. Should be the bundle ID of the app play `.payments`                |
+| modalHeader         | node             | <Default3DSecureModal />       | The element that will be rendered above the webview inside the modal.                                                                      |
+| modalFooter         | node             | null                           | The element that will be rendered below the webview inside the modal.                                                                      |
+| webviewStyle        | object           | null                           | The styles for the webview. This prop is directly passed to the `WebView` component's style prop.                                          |
+| modalStyle          | object           | null                           | The styles for the modal. This prop is directly passed to the `Modal` component's style prop.                                              |
+| modalContainerStyle | object           | null                           | The styles for the view that wraps the modals content, including the modalHeader, webview and modalFooter.                                 |
+| checkoutID          | string           | **Required**                   | The checkout ID received from your server.                                                                                                 |
+| paymentBrand        | string           | null                           | The card brand. E.g Visa, MasterCard, etc.                                                                                                 |
+| cardHolder          | string           | **Required**                   | The name of the card holder appearing on the card.                                                                                         |
+| cardNumber          | string           | **Required**                   | The card number appearing on the card.                                                                                                     |
+| cardExpiryMonth     | string           | **Required**                   | The card expiry month.                                                                                                                     |
+| cardExpiryYear      | string           | **Required**                   | The card expiry year.                                                                                                                      |
+| cardCVV             | string           | **Required**                   | The three or four digit CVV code of the card.                                                                                              |
+
+## Available Methods
+
+#### `getCheckoutId()`
+```javascript
+static getCheckoutId(url: string, amount: string, currency: string, paymentType: string, otherParams: object, requestHeaders: object, testMode: string)
+```
+
+Request the checkout ID from your server. You don't need to use this function. You can write your own function for making the request for the checkout ID from your server and still normally pass it to the `PeachMobile` component. Returns a axios request promise.
+
+##### Parameters:
+
+| Name           | Type   | Required | Description                                                                                                                                                                                       |
+| -------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checkoutID     | string | Yes      | The url the request for the checkout ID should be made to.                                                                                                                                        |
+| amount         | string | Yes      | The amount that should be charged to the users card.                                                                                                                                              |
+| currency       | string | Yes      | The currency the amount should be charged in.                                                                                                                                                     |
+| paymentType    | string | Yes      | The payment type for the request. Check [Peach Payments API Reference](https://peachpayments.docs.oppwa.com/reference/parameters) for all payment types and descriptions.                         |
+| otherParams    | object | No       | Any other params that needs to be passed with the call.                                                                                                                                           |
+| requestHeaders | object | No       | Request headers for the network call.                                                                                                                                                             |
+| testMode       | string | No       | The testMode for the checkout. Can be 'EXTERNAL' or 'INTERNAL'. Check [Peach Payments API Reference](https://peachpayments.docs.oppwa.com/reference/parameters) for more information on testMode. |
+
+#### `createTransaction()`
+```javascript
+static createTransaction(checkoutID: string, paymentBrand: string, cardHolder: string, cardNumber: string, cardExpiryMonth: string, cardExpiryYear: string, cardCVV: string)
+```
+
+Validate the card parameters and create a transaction object. Returns a promise that when resolves will return a transaction object. You can use this function to create a transaction that can be passed to the `submitTransaction` function. It is then not necessary too pass the card details as props to the component.   
+
+##### Parameters:
+
+| Name            | Type   | Required | Description                                        |
+| --------------- | ------ | -------- | ---------------------------------------------------|
+| checkoutID      | string | Yes      | The checkout ID received from your server.         |
+| paymentBrand    | string | Yes      | The card brand. E.g Visa, MasterCard, etc.         |
+| cardHolder      | string | Yes      | The name of the card holder appearing on the card. |
+| cardNumber      | string | Yes      | The card number appearing on the card.             |
+| cardExpiryMonth | string | Yes      | The card expiry month.                             |
+| cardExpiryYear  | string | Yes      | The card expiry year.                              |
+| cardCVV         | string | Yes      | The three or four digit CVV code of the card.      |
+
+#### `submitTransaction()`
+```javascript
+submitTransaction(transaction: TransactionObject)
+```
+
+Submit the transaction to peach payments. Returns a promise that will resolve to true if the transaction was successfully submitted or will reject if there was an error. 
+A 3D secure modal will automatically open if 3D secure is required, once the user has submitted the 3D secure form the modal will again automatically close and the promise will resolve.
+
+##### Parameters:
+
+| Name            | Type              | Required | Description                                                                                                                             |
+| --------------- | ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------|
+| transaction     | TransactionObject | No       | If you have not passed any card props to the component you can pass a transaction object created by the `createTransaction()` function. |
+ 
+#### `getResourcePath()`
+```javascript
+static getResourcePath()
+```
+
+Get the resource path after the transaction has been submitted. Will return a promise that resolves to the resource path string. Useful when you are using your own function to check the transaction status and require the resource path.
+
+### `getPaymentStatus()`
+```javascript
+static getPaymentStatus(url: string, resourcePath: string, otherParams: object, requestHeaders: object)
+```
+
+Get the status of the payment after the transaction has been submitted. 
 ## Available Modal Props
 Take a look at [react-native-modal](https://github.com/react-native-community/react-native-modal) to see all the available props to customise the 3D secure modal. All the props of the Modal are directly available through the `PeachMobile` component except the `isVisible` prop. The `isVisible` prop is controlled by the package to show and hide the 3D secure modal automatically.
 
