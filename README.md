@@ -1,37 +1,85 @@
-# react-native-peach-mobile
+# Peach Payments Mobile for React Native
+
+Peach Payments Mobile component or React Native (iOS and Android)
+
+[Peach Payments](https://www.peachpayments.com/#/home) is a South African payment gateway. It currently powers businesses in South Africa and Mauritius and will soon be launching services in Kenya, Nigeria and more countries in Africa.
+
+This React Native component bridges the Peach Payments Mobile SDk, specifically the ["SDK & Your Own UI"](https://peachpayments.docs.oppwa.com/tutorials/mobile-sdk/custom-ui/integration) functions. Before using this component, first read through Peach Payment's documentation, especially their ["Set Up Your Server""](https://peachpayments.docs.oppwa.com/tutorials/mobile-sdk/integration/server) doc. You will need to expose two APIs on your backend for your app to communicate with.
 
 ## Getting started
 
-`$ npm install react-native-peach-mobile --save`
+### Installation
 
-### Mostly automatic installation
+#### Installing (React Native >= 0.60.0)
 
-`$ react-native link react-native-peach-mobile`
+Install `react-native-peach-mobile` (latest):
 
-### Manual installation
+```
+yarn add react-native-peach-mobile --save
+```
 
+or
+
+```
+npm install react-native-peach-mobile
+```
+
+Go to your ios folder and run:
+
+```
+pod install
+```
+
+#### Installing (React Native == 0.59.x)
+
+Install `react-native-peach-mobile` (latest):
+
+```
+yarn add react-native-peach-mobile --save
+```
+
+or
+
+```
+npm install react-native-peach-mobile
+```
+
+Use `react-native link` to add the library to your project:
+
+```
+react-native link react-native-peach-mobile
+```
+
+### Integrating into Your App
 
 #### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-peach-mobile` and add `PeachMobile.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libPeachMobile.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+Add the following to `AppDelegate.m` replacing "com.example.app.payments" on line two with your app's bundle ID plus `.payments`:
+```objective-c
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+  if ([url.scheme localizedCaseInsensitiveCompare:@"com.example.app.payments"] == NSOrderedSame) {
+    [NSNotificationCenter.defaultCenter postNotificationName:@"AsyncPaymentCompletedNotificationKey"  object:nil];
+    return true;
+  }
+  return false;
+}
+```
 
+Add the following to `Info.plist` again, replacing "com.example.app.payments" on line three with your app's bundle ID plus `.payments`:
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>com.example.app.payments</string>
+</array>
+```
+
+The iOS library is written in Swift, it is therefore necessary to create a Swift Bridging Header (If you don't have one already). 
+
+Add a new file to Xcode (File > New > File), then select “Swift File”. Name your file `RNPlaceholder`. You should get an alert box asking "Would you like  configure an Objective-C bridging header?". Select 'Create Bridging Header'.
+
+[logo]: hhttps://github.com/Codehesion-ZA/react-native-peach-mobile/docs/alert.png
 #### Android
 
-1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-  - Add `import com.reactlibrary.PeachMobilePackage;` to the imports at the top of the file
-  - Add `new PeachMobilePackage()` to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-peach-mobile'
-  	project(':react-native-peach-mobile').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-peach-mobile/android')
-  	```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-      compile project(':react-native-peach-mobile')
-  	```
 
 
 ## Usage
