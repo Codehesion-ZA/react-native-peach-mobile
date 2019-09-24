@@ -1,7 +1,9 @@
 # Peach Payments Mobile for React Native
 
-Peach Payments Mobile component or React Native (iOS and Android)
+<span class="badge-npmdownloads"><a href="https://npmjs.org/package/react-native-peach-mobile" title="View this project on NPM"><img alt="npm" src="https://img.shields.io/npm/v/react-native-peach-mobile" alt="NPM downloads"></a></span>
+<span class="badge-npmdownloads"><a href="https://npmjs.org/package/react-native-peach-mobile" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/react-native-peach-mobile" alt="NPM downloads" /></a></span>
 
+Peach Payments Mobile component or React Native (iOS and Android)
 [Peach Payments](https://www.peachpayments.com/#/home) is a South African payment gateway. It currently powers businesses in South Africa and Mauritius and will soon be launching services in Kenya, Nigeria and more countries in Africa.
 
 <p align="center">
@@ -203,13 +205,15 @@ if (response.data.result.code && successCodesPattern.test(response.data.result.c
 | webviewStyle        | object           | null                           | The styles for the webview. This prop is directly passed to the `WebView` component's style prop.                                          |
 | modalStyle          | object           | null                           | The styles for the modal. This prop is directly passed to the `Modal` component's style prop.                                              |
 | modalContainerStyle | object           | null                           | The styles for the view that wraps the modals content, including the modalHeader, webview and modalFooter.                                 |
-| checkoutID          | string           | **Required**                   | The checkout ID received from your server.                                                                                                 |
+| checkoutID          | string           | <b>Conditional*</b>            | The checkout ID received from your server.                                                                                                 |
 | paymentBrand        | string           | null                           | The card brand. E.g Visa, MasterCard, etc.                                                                                                 |
-| cardHolder          | string           | **Required**                   | The name of the card holder appearing on the card.                                                                                         |
-| cardNumber          | string           | **Required**                   | The card number appearing on the card.                                                                                                     |
-| cardExpiryMonth     | string           | **Required**                   | The card expiry month.                                                                                                                     |
-| cardExpiryYear      | string           | **Required**                   | The card expiry year.                                                                                                                      |
-| cardCVV             | string           | **Required**                   | The three or four digit CVV code of the card.                                                                                              |
+| cardHolder          | string           | <b>Conditional*</b>            | The name of the card holder appearing on the card.                                                                                         |
+| cardNumber          | string           | <b>Conditional*</b>            | The card number appearing on the card.                                                                                                     |
+| cardExpiryMonth     | string           | <b>Conditional*</b>            | The card expiry month.                                                                                                                     |
+| cardExpiryYear      | string           | <b>Conditional*</b>            | The card expiry year.                                                                                                                      |
+| cardCVV             | string           | <b>Conditional*</b>            | The three or four digit CVV code of the card.                                                                                              |
+
+*All the fields marked Conditional\* are not required if you pass the `submitTransaction()` function a transaction object.   
 
 ## Available Methods
 
@@ -224,7 +228,7 @@ Request the checkout ID from your server. You don't need to use this function. Y
 
 | Name           | Type   | Required | Description                                                                                                                                                                                       |
 | -------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| checkoutID     | string | Yes      | The url the request for the checkout ID should be made to.                                                                                                                                        |
+| url            | string | Yes      | The url the request for the checkout ID should be made too.                                                                                                                                       |
 | amount         | string | Yes      | The amount that should be charged to the users card.                                                                                                                                              |
 | currency       | string | Yes      | The currency the amount should be charged in.                                                                                                                                                     |
 | paymentType    | string | Yes      | The payment type for the request. Check [Peach Payments API Reference](https://peachpayments.docs.oppwa.com/reference/parameters) for all payment types and descriptions.                         |
@@ -244,7 +248,7 @@ Validate the card parameters and create a transaction object. Returns a promise 
 | Name            | Type   | Required | Description                                        |
 | --------------- | ------ | -------- | ---------------------------------------------------|
 | checkoutID      | string | Yes      | The checkout ID received from your server.         |
-| paymentBrand    | string | Yes      | The card brand. E.g Visa, MasterCard, etc.         |
+| paymentBrand    | string | No       | The card brand. E.g Visa, MasterCard, etc.         |
 | cardHolder      | string | Yes      | The name of the card holder appearing on the card. |
 | cardNumber      | string | Yes      | The card number appearing on the card.             |
 | cardExpiryMonth | string | Yes      | The card expiry month.                             |
@@ -277,7 +281,17 @@ Get the resource path after the transaction has been submitted. Will return a pr
 static getPaymentStatus(url: string, resourcePath: string, otherParams: object, requestHeaders: object)
 ```
 
-Get the status of the payment after the transaction has been submitted. 
+Get the status of the payment after the transaction has been submitted.  Will return a axios request promise. You don't need to use this function. You can write your own function for requesting the transaction status from your server. 
+
+##### Paramaters:
+
+| Name           | Type   | Required | Description                                                                                                                                       |
+| -------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url            | string | Yes      | The url the request for the transaction status should be made too.                                                                                |
+| resourcePath   | string | No       | The resource path requested from the SDK. If this is not passed, the function will fetch it from the SDK using the `getPaymentStatus()` function. |
+| otherParams    | object | No       | Any other params that needs to be passed with the call.                                                                                           |
+| requestHeaders | object | No       | Request headers for the network call.                                                                                                             |
+
 ## Available Modal Props
 Take a look at [react-native-modal](https://github.com/react-native-community/react-native-modal) to see all the available props to customise the 3D secure modal. All the props of the Modal are directly available through the `PeachMobile` component except the `isVisible` prop. The `isVisible` prop is controlled by the package to show and hide the 3D secure modal automatically.
 
