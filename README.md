@@ -77,7 +77,7 @@ The iOS library is written in Swift, it is therefore necessary to create a Swift
 
 Add a new file to Xcode (File > New > File), then select “Swift File”. Name your file `RNPlaceholder`. You should get an alert box asking "Would you like  configure an Objective-C bridging header?". Select 'Create Bridging Header'.
 
-[logo]: hhttps://github.com/Codehesion-ZA/react-native-peach-mobile/docs/alert.png
+![](https://github.com/Codehesion-ZA/react-native-peach-mobile/blob/master/docs/alert.png "Would you like  configure an Objective-C bridging header?")
 #### Android
 
 
