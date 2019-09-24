@@ -4,6 +4,10 @@ Peach Payments Mobile component or React Native (iOS and Android)
 
 [Peach Payments](https://www.peachpayments.com/#/home) is a South African payment gateway. It currently powers businesses in South Africa and Mauritius and will soon be launching services in Kenya, Nigeria and more countries in Africa.
 
+<p align="center">
+<img src="/docs/example.gif" height="500" />
+</p>
+
 This React Native component bridges the Peach Payments Mobile SDk, specifically the ["SDK & Your Own UI"](https://peachpayments.docs.oppwa.com/tutorials/mobile-sdk/custom-ui/integration) functions. Before using this component, first read through Peach Payment's documentation, especially their ["Set Up Your Server""](https://peachpayments.docs.oppwa.com/tutorials/mobile-sdk/integration/server) doc. You will need to expose two APIs on your backend for your app to communicate with.
 
 ## Getting started
@@ -77,7 +81,7 @@ The iOS library is written in Swift, it is therefore necessary to create a Swift
 
 Add a new file to Xcode (File > New > File), then select “Swift File”. Name your file `RNPlaceholder`. You should get an alert box asking "Would you like  configure an Objective-C bridging header?". Select 'Create Bridging Header'.
 
-![](https://github.com/Codehesion-ZA/react-native-peach-mobile/blob/master/docs/alert.png "Would you like  configure an Objective-C bridging header?")
+![](/docs/alert.png "Would you like  configure an Objective-C bridging header?")
 #### Android
 
 
