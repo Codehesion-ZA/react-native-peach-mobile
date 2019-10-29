@@ -1,7 +1,7 @@
 {
   "name": "react-native-peach-mobile",
   "title": "React Native Peach Mobile",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A React Native library for Peach Payments ",
   "main": "lib/index.js",
   "scripts": {
