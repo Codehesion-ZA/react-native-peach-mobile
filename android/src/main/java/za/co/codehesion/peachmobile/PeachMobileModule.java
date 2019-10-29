@@ -174,6 +174,7 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
                 cardExpiryYear,
                 cardCVV
         );
+
         paymentParams.setShopperResultUrl(this.urlScheme + "://result");
 
         return new Transaction(paymentParams);

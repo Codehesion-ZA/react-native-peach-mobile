@@ -58,7 +58,7 @@ PODS:
   - React-jsinspector (0.60.5)
   - react-native-webview (7.0.6):
     - React
-  - React-PeachMobile (0.0.1):
+  - React-PeachMobile (1.0.0):
     - React
   - React-RCTActionSheet (0.60.5):
     - React-Core (= 0.60.5)
@@ -180,7 +180,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-webview: 8656c1574ea8434beba07fe548e67208fdbb957b
-  React-PeachMobile: 045fa66346f9a4ebeb830c159ee3b9582cc4ff6f
+  React-PeachMobile: cc775585ef524e0022a34c0dc979b8baacdde288
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
   React-RCTAnimation: 359ba1b5690b1e87cc173558a78e82d35919333e
   React-RCTBlob: 5e2b55f76e9a1c7ae52b826923502ddc3238df24
