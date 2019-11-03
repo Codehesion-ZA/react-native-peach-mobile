@@ -81,6 +81,10 @@ Add the following to `Info.plist` again, replacing "com.example.app.payments" on
 </array>
 ```
 
+The last thing to set for the 3D secure to work is the URL type in the Info tab in XCode(also replacing "com.example.app.payments" on line three with your app's bundle ID plus `.payments`):
+
+![](/docs/url-type.png "URL Type")
+
 The iOS 
  is written in Swift, it is therefore necessary to create a Swift Bridging Header (If you don't have one already). 
 
