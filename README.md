@@ -93,7 +93,32 @@ Add a new file to Xcode (File > New > File), then select “Swift File”. Name 
 ![](/docs/alert.png "Would you like  configure an Objective-C bridging header?")
 #### Android
 
-Add the following to your app's `MainActivity.java`:
+To configure the external linking in Android for the 3D secure redirect, you need to create a new intent in the manifest.
+
+1. Set launchMode of MainActivity to singleTask in order to receive intent on existing MainActivity.
+2. Add the new intent-filter inside the MainActivity entry with a VIEW type action:
+
+Here is an example of what your `AndroidManifest.xml` should look like: (remember to replace "com.example.app.payments" on line two with your app's package name plus `.payments`:
+```xml
+...
+<activity
+    android:name=".MainActivity"
+    android:launchMode="singleTask">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+    <intent-filter>
+        <data android:scheme="com.example.app.payments"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+    </intent-filter>
+</activity>
+...
+```
+
+Add the following to your app's `MainActivity.java` to handle the intent in the `MainActivity`:
 ```Java
 @Override
 public void onNewIntent(Intent intent) {
@@ -101,17 +126,7 @@ public void onNewIntent(Intent intent) {
 }
 ```
 
-Add the following to `AndroidManifest.xml` inside the activity tag, replacing "com.example.app.payments" on line two with your app's package name plus `.payments`:
-```xml
-<intent-filter>
-      <data android:scheme="com.example.app.payments"/>
 
-      <action android:name="android.intent.action.VIEW"/>
-
-      <category android:name="android.intent.category.DEFAULT"/>
-      <category android:name="android.intent.category.BROWSABLE"/>
-</intent-filter>
-```
 
 ## Usage
 
