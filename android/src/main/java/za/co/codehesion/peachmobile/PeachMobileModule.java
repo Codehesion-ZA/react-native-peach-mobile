@@ -24,6 +24,7 @@ import com.oppwa.mobile.connect.payment.BrandsValidation;
 import com.oppwa.mobile.connect.payment.CheckoutInfo;
 import com.oppwa.mobile.connect.payment.ImagesRequest;
 import com.oppwa.mobile.connect.payment.PaymentParams;
+import com.oppwa.mobile.connect.payment.token.TokenPaymentParams;
 import com.oppwa.mobile.connect.payment.card.CardPaymentParams;
 import com.oppwa.mobile.connect.provider.Connect.ProviderMode;
 import com.oppwa.mobile.connect.provider.ITransactionListener;
@@ -121,21 +122,55 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
     }
 
     @ReactMethod
+    public void createTransactionWithToken(String checkoutID, String paymentBrand, String tokenID, String cardCVV, Promise promise) {
+        if (this.urlScheme.equals("")) {
+            promise.reject("", "ShopperResultURL is nil. This probably means you forgot to set it.", new Error("ShopperResultURL is nil"));
+            return;
+        }
+
+        try {
+            createOPPTransaction(checkoutID, tokenID, paymentBrand, cardCVV);
+            WritableMap map = Arguments.createMap();
+
+            map.putString("checkoutID", checkoutID);
+            map.putString("paymentBrand", paymentBrand);
+            map.putString("tokenID", tokenID);
+            map.putString("cardCVV", cardCVV);
+
+            promise.resolve(map);
+
+        } catch (PaymentException error) {
+            promise.reject(error.getError().getErrorCode().toString(), error.getLocalizedMessage(), error);
+        }
+    }
+
+    @ReactMethod
     public void submitTransaction(ReadableMap transactionMap, Promise promise) {
         if (binder == null) {
             promise.reject("", "Provider not set. This probably means you forgot to initialize the provider.", new Error("Provider not set"));
             return;
         }
+
         try {
-            Transaction transaction = createOPPTransaction(
-                    transactionMap.getString("checkoutID"),
-                    transactionMap.getString("paymentBrand"),
-                    transactionMap.getString("cardHolder"),
-                    transactionMap.getString("cardNumber"),
-                    transactionMap.getString("cardExpiryMonth"),
-                    transactionMap.getString("cardExpiryYear"),
-                    transactionMap.getString("cardCVV")
-            );
+            Transaction transaction;
+            if (transactionMap.getString("tokenID") != null) {
+                transaction = createOPPTransaction(
+                        transactionMap.getString("checkoutID"),
+                        transactionMap.getString("tokenID"),
+                        transactionMap.getString("paymentBrand"),
+                        transactionMap.getString("cardCVV")
+                );
+            } else {
+                 transaction = createOPPTransaction(
+                        transactionMap.getString("checkoutID"),
+                        transactionMap.getString("paymentBrand"),
+                        transactionMap.getString("cardHolder"),
+                        transactionMap.getString("cardNumber"),
+                        transactionMap.getString("cardExpiryMonth"),
+                        transactionMap.getString("cardExpiryYear"),
+                        transactionMap.getString("cardCVV")
+                );
+            }
             transactionListenerPromise = promise;
             binder.submitTransaction(transaction);
         } catch (PaymentException error) {
@@ -176,6 +211,19 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
         );
 
         paymentParams.setShopperResultUrl(this.urlScheme + "://result");
+
+        return new Transaction(paymentParams);
+    }
+
+    private Transaction createOPPTransaction(String checkoutID, String tokenID, String paymentBrand, String cardCVV) throws PaymentException {
+        TokenPaymentParams paymentParams;
+        if (cardCVV != null) {
+             paymentParams = new TokenPaymentParams(checkoutID, tokenID, paymentBrand, cardCVV);
+        } else {
+            paymentParams = new TokenPaymentParams(checkoutID, tokenID, paymentBrand);
+        }
+        paymentParams.setShopperResultUrl(this.urlScheme + "://result");
+
 
         return new Transaction(paymentParams);
     }
