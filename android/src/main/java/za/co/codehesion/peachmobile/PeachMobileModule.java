@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.NoSuchKeyException;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -123,10 +124,6 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
     @ReactMethod
     public void createTransactionWithToken(String checkoutID, String paymentBrand, String tokenID, String cardCVV, Promise promise) {
-        if (this.urlScheme.equals("")) {
-            promise.reject("", "ShopperResultURL is nil. This probably means you forgot to set it.", new Error("ShopperResultURL is nil"));
-            return;
-        }
 
         try {
             createOPPTransaction(checkoutID, tokenID, paymentBrand, cardCVV);
@@ -135,7 +132,7 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
             map.putString("checkoutID", checkoutID);
             map.putString("paymentBrand", paymentBrand);
             map.putString("tokenID", tokenID);
-            map.putString("cardCVV", cardCVV);
+            map.putString("cardCVV", cardCVV == null ? "" : cardCVV);
 
             promise.resolve(map);
 
@@ -153,15 +150,15 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
         try {
             Transaction transaction;
-            if (transactionMap.getString("tokenID") != null) {
+            try {
                 transaction = createOPPTransaction(
                         transactionMap.getString("checkoutID"),
                         transactionMap.getString("tokenID"),
                         transactionMap.getString("paymentBrand"),
-                        transactionMap.getString("cardCVV")
+                        transactionMap.getString("cardCVV") == "" ? null : transactionMap.getString("cardCVV")
                 );
-            } else {
-                 transaction = createOPPTransaction(
+            } catch (NoSuchKeyException error) {
+                transaction = createOPPTransaction(
                         transactionMap.getString("checkoutID"),
                         transactionMap.getString("paymentBrand"),
                         transactionMap.getString("cardHolder"),
@@ -217,12 +214,13 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
     private Transaction createOPPTransaction(String checkoutID, String tokenID, String paymentBrand, String cardCVV) throws PaymentException {
         TokenPaymentParams paymentParams;
-        if (cardCVV != null) {
-             paymentParams = new TokenPaymentParams(checkoutID, tokenID, paymentBrand, cardCVV);
+        String tempPaymentBrand = paymentBrand != null ? paymentBrand : "VISA";
+        if (cardCVV == null || cardCVV.equals("")) {
+            paymentParams = new TokenPaymentParams(checkoutID, tokenID, tempPaymentBrand);
         } else {
-            paymentParams = new TokenPaymentParams(checkoutID, tokenID, paymentBrand);
+            paymentParams = new TokenPaymentParams(checkoutID, tokenID, tempPaymentBrand, cardCVV);
         }
-        paymentParams.setShopperResultUrl(this.urlScheme + "://result");
+        paymentParams.setShopperResultUrl(this.urlScheme != "" ? this.urlScheme + "://result" : "payments://result");
 
 
         return new Transaction(paymentParams);
@@ -276,6 +274,7 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
     @Override
     public void transactionFailed(Transaction transaction, PaymentError paymentError) {
+        Log.e("Payment Error: ", paymentError.getErrorMessage(), new Error(paymentError.getErrorInfo()));
         transactionListenerPromise.reject(paymentError.getErrorCode().toString(), paymentError.getErrorMessage(), new Error(paymentError.getErrorInfo()));
     }
 
@@ -290,7 +289,6 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
     @Override
     public void onNewIntent(Intent intent) {
-        Log.d("Peach Mobile Module 2", intent.getScheme());
         if (intent.getScheme().equals(this.urlScheme)) {
             sendEvent("asynchronousPaymentCallback");
         }

@@ -141,10 +141,10 @@ class PeachMobile: RCTEventEmitter {
     private func createOPPTransaction(checkoutID: String, tokenID: String, paymentBrand: String, cvv: String?) throws -> OPPTransaction? {
         do {
             let params: OPPTokenPaymentParams
+            let tempPaymentBrand = paymentBrand != "" ? paymentBrand : "VISA"
             if (cvv != nil) {
                 params = try OPPTokenPaymentParams.init(checkoutID: checkoutID, tokenID: tokenID, cardPaymentBrand: paymentBrand, cvv: cvv)
             } else {
-                let tempPaymentBrand = paymentBrand != "" ? paymentBrand : "VISA";
                 params = try OPPTokenPaymentParams.init(checkoutID: checkoutID, tokenID: tokenID, paymentBrand: tempPaymentBrand)
             }
             params.shopperResultURL = self.urlScheme != "" ? self.urlScheme + "://payment" : "payments://paymnet";
