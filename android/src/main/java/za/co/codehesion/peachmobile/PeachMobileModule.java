@@ -289,7 +289,7 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
 
     @Override
     public void onNewIntent(Intent intent) {
-        if (intent.getScheme().equals(this.urlScheme)) {
+        if (intent.getScheme() != null && intent.getScheme().equals(this.urlScheme)) {
             sendEvent("asynchronousPaymentCallback");
         }
     }
