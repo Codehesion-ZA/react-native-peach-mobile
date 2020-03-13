@@ -120,12 +120,44 @@ Here is an example of what your `AndroidManifest.xml` should look like: (remembe
 
 Add the following to your app's `MainActivity.java` to handle the intent in the `MainActivity`:
 ```Java
+//Add this import to the top of the file
+import android.content.Intent;
+
+//Add this inside the class
 @Override
 public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
 }
 ```
 
+Your minSdkVersion to use this package should be 17.
+You can change that in the `android/build.gradle` file
+```Java
+buildscript {
+  ext {
+    ...
+    minSdkVersion = 17
+  }
+}
+```
+
+If you get this error when building 'The number of method references in a .dex file cannot exceed 64K.'.
+Just add these lines in the `app/build.gradle` file
+```Java
+android {
+  defaultConfig {
+    ...
+    // Enabling multidex support.
+    multiDexEnabled true
+  }
+  ...
+}
+
+dependencies {
+  ...
+  implementation 'com.android.support:multidex:1.0.3'
+}
+```
 
 
 ## Usage
