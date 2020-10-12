@@ -49,6 +49,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)checkoutProvider:(OPPCheckoutProvider *)checkoutProvider validateCardHolder:(nullable NSString *)cardHolder;
 
+/// @name Safari services methods
+
+/**
+ Called when the user taps the 'Done' button on SFSafariViewController.
+ @param checkoutProvider The instance of `OPPCheckoutProvider` that is calling delegate method.
+ */
+- (void)checkoutProviderDidFinishSafariViewController:(OPPCheckoutProvider *)checkoutProvider;
+
 /// @name Apple Pay methods
 
 /**
