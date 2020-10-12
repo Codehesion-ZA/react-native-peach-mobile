@@ -43,6 +43,14 @@ typedef NS_ENUM(NSInteger, OPPCheckoutCardBrandsDisplayMode) {
     OPPCheckoutCardBrandsDisplayModeGrouped
 };
 
+/// An enumeration for the possible ways of automatic card brand detection
+typedef NS_ENUM(NSInteger, OPPCheckoutBrandDetectionType) {
+    /// Uses regular expressions to analyze card number (supports a limited number of brands)
+    OPPCheckoutBrandDetectionTypeRegex,
+    /// Searches card bin in the bin list (more precise)
+    OPPCheckoutBrandDetectionTypeBinList
+};
+
 /**
  Class which encapsulates settings for the built-in in-App payment page. Use this to customize both the visual elements of the payment pages as well as functionality. This includes changing colors and texts, defining payment methods.
  */
@@ -134,6 +142,24 @@ NS_ASSUME_NONNULL_BEGIN
  Default is `NO`.
  */
 @property (nonatomic) BOOL displayTotalAmount;
+
+/**
+ Type of automatic card brand detection to be used.
+ Default is `OPPCheckoutBrandDetectionTypeRegex`.
+ */
+@property (nonatomic) OPPCheckoutBrandDetectionType brandDetectionType;
+
+/**
+ Sets the preferred order of the detected card brands to be shown under the card number text field.
+ By default order from `paymentBrands` is used.
+ */
+@property (nonatomic, copy) NSArray<NSString *> *brandDetectionPriority;
+
+/**
+ A flag that specifies whether show multiple detected brands under card number text field or keep them hidden by default.
+ Default is `YES`.
+ */
+@property (nonatomic) BOOL showDetectedBrands;
 
 /// @name Deprecated
 

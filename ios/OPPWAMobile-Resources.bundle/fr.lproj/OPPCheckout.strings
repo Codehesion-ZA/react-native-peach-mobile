@@ -44,10 +44,10 @@
 "FIELD_LABEL_IBAN" = "IBAN";
 "FIELD_LABEL_IBAN_OR_ACCOUNT_NUMBER" = "IBAN ou numéro de compte";
 "FIELD_LABEL_BIC_OR_BANK_CODE" = "BIC ou code banque";
-"FIELD_LABEL_SELECT_BANK" = "Sélectionnez la Banque";
-"FIELD_LABEL_SELECT_COUNTRY" = "Sélectionnez le pays";
+"FIELD_LABEL_SELECT_BANK" = "Sélectionnez la Banque:";
+"FIELD_LABEL_SELECT_COUNTRY" = "Sélectionnez le pays:";
 "FIELD_LABEL_STORE_PAYMENT_DETAILS" = "Memoriser vos coordonnées de paiement pour une utilisation ultérieure";
-"FIELD_LABEL_STORE_CARD_TYPE" = "Choisissez le type de carte";
+"FIELD_LABEL_STORE_CARD_TYPE" = "Choisissez le type de carte:";
 "FIELD_LABEL_NUMBER_OF_INSTALLMENTS" = "Nombre de versements";
 "FIELD_LABEL_EMAIL" = "Email";
 "FIELD_LABEL_COUNTRY_CODE" = "Indicatif du pays";
@@ -56,13 +56,13 @@
 /// Text field placeholders
 "FIELD_PLACEHOLDER_CARD_HOLDER_NAME" = "Nom tel qu'il apparaît sur la carte";
 "FIELD_PLACEHOLDER_CARD_NUMBER" = "Numéro sur le devant de la carte";
-"FIELD_PLACEHOLDER_EXPIRY_DATE" = " MM/AA ou MM/AAAA";
+"FIELD_PLACEHOLDER_EXPIRY_DATE" = "MM/AA ou MM/AAAA";
 "FIELD_PLACEHOLDER_CVV_3_DIGITS" = "Code de 3 chiffres";
 "FIELD_PLACEHOLDER_CVV_4_DIGITS" = "Code de 4 chiffres";
 "FIELD_PLACEHOLDER_BANK_ACCOUNT_HOLDER_NAME" = "Nom du titulaire du compte";
 "FIELD_PLACEHOLDER_IBAN" = "Identifiant international de compte bancaire";
 "FIELD_PLACEHOLDER_IBAN_OR_ACCOUNT_NUMBER" = "IBAN ou numéro de compte";
-"FIELD_PLACEHOLDER_BIC_OR_BANK_CODE" = "BIC or code banque";
+"FIELD_PLACEHOLDER_BIC_OR_BANK_CODE" = "BIC ou code banque";
 "FIELD_PLACEHOLDER_COUNTRY_CODE" = "+xx";
 "FIELD_PLACEHOLDER_EMAIL" = "Email";
 "FIELD_PLACEHOLDER_NATIONAL_IDENTIFIER" = "Identifiant national";
@@ -70,7 +70,7 @@
 /// Text field errors
 "FIELD_ERROR_CARD_HOLDER_NAME_INVALID" = "Le nom du titulaire n'est pas valable";
 "FIELD_ERROR_CARD_NUMBER_INVALID" = "Le numéro de carte saisi n'est pas valable";
-"FIELD_ERROR_CARD_EXPIRY_DATE_INVALID" = " La date d'expiration de la carte n'est pas valable, utilisez le format MM/AA ou MM/AAAA";
+"FIELD_ERROR_CARD_EXPIRY_DATE_INVALID" = "La date d'expiration de la carte n'est pas valable, utilisez le format MM/AA ou MM/AAAA";
 "FIELD_ERROR_CARD_EXPIRED" = "La carte est expirée";
 "FIELD_ERROR_CARD_CVV_3_DIGITS_INVALID" = "Le code de sécurité doit contenir les 3 derniers chiffres situés au dos de votre carte";
 "FIELD_ERROR_CARD_CVV_4_DIGITS_INVALID" = "Le code de sécurité doit contenir les 4 chiffres sur le devant de la carte";

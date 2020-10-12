@@ -12,7 +12,7 @@
 @import UIKit;
 #import "OPPCheckoutPaymentMethod.h"
 
-
+NS_ASSUME_NONNULL_BEGIN
 /**
  A constant to be used instead of specific card brand. The brand will be detected automatically based on card number.
  */
@@ -25,7 +25,6 @@ extern NSString *const OPPPaymentBrandCard;
  
  To create and submit a transaction, use `-[OPPCheckoutProvider presentCheckoutWithPaymentBrand:loadingHandler:completionHandler:cancelHandler:]` in button action method.
  */
-NS_ASSUME_NONNULL_BEGIN
 @interface OPPPaymentButton : UIButton
 
 /// @name Initialization
