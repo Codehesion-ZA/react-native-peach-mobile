@@ -268,6 +268,7 @@ if (response.data.result.code && successCodesPattern.test(response.data.result.c
 
 ## Available Methods
 
+
 #### `getCheckoutId()`
 ```javascript
 static getCheckoutId(url: string, amount: string, currency: string, paymentType: string, otherParams: object, requestHeaders: object, testMode: string)
@@ -287,12 +288,13 @@ Request the checkout ID from your server. You don't need to use this function. Y
 | requestHeaders | object | No       | Request headers for the network call.                                                                                                                                                             |
 | testMode       | string | No       | The testMode for the checkout. Can be 'EXTERNAL' or 'INTERNAL'. Check [Peach Payments API Reference](https://peachpayments.docs.oppwa.com/reference/parameters) for more information on testMode. |
 
+
 #### `createTransaction()`
 ```javascript
 static createTransaction(checkoutID: string, paymentBrand: string, cardHolder: string, cardNumber: string, cardExpiryMonth: string, cardExpiryYear: string, cardCVV: string)
 ```
 
-Validate the card parameters and create a transaction object. Returns a promise that when resolves will return a transaction object. You can use this function to create a transaction that can be passed to the `submitTransaction` function. It is then not necessary too pass the card details as props to the component.   
+Validate the card parameters and create a transaction object. Returns a promise that when resolves will return a transaction object. You can use this function to create a transaction that can be passed to the `submitTransaction` or `submitRegistration` functions.
 
 ##### Parameters:
 
@@ -305,6 +307,24 @@ Validate the card parameters and create a transaction object. Returns a promise 
 | cardExpiryMonth | string | Yes      | The card expiry month.                             |
 | cardExpiryYear  | string | Yes      | The card expiry year.                              |
 | cardCVV         | string | Yes      | The three or four digit CVV code of the card.      |
+
+
+#### `createTransactionWithToken()`
+```javascript
+static createTransactionWithToken(checkoutID: string, paymentBrand: string, tokenID: string, cardCVV: string)
+```
+
+Create a transaction object with a tokenized card. Returns a promise that when resolves will return a transaction object. You can use this function to create a transaction that can be passed to the `submitTransaction` function.
+
+##### Parameters:
+
+| Name            | Type   | Required | Description                                        |
+| --------------- | ------ | -------- | ---------------------------------------------------|
+| checkoutID      | string | Yes      | The checkout ID received from your server.         |
+| paymentBrand    | string | No       | The card brand. E.g Visa, MasterCard, etc.         |
+| tokenID         | string | Yes      | The tokenID of the tokenized card.                 |
+| cardCVV         | string | No       | The three or four digit CVV code of the card.      |
+
 
 #### `submitTransaction()`
 ```javascript
@@ -321,6 +341,7 @@ A 3D secure modal will automatically open if 3D secure is required, once the use
 | transaction     | TransactionObject | Yes       | Transaction object created by the `createTransaction()` function. |
 | mode            | TransactionMode   | Yes       | Transaction mode, 'live' or 'test'.                               |
 
+
 #### `submitRegistration()`
 ```javascript
 static submitTransaction(transaction: TransactionObject, mode: TransactionMode)
@@ -336,12 +357,14 @@ A 3D secure modal will automatically open if 3D secure is required, once the use
 | transaction     | TransactionObject | Yes       | Transaction object created by the `createTransaction()` function. |
 | mode            | TransactionMode   | Yes       | Transaction mode, 'live' or 'test'.                               |
  
+
 #### `getResourcePath()`
 ```javascript
 static getResourcePath()
 ```
 
 Get the resource path after the transaction has been submitted. Will return a promise that resolves to the resource path string. Useful when you are using your own function to check the transaction status and require the resource path.
+
 
 ### `getPaymentStatus()`
 ```javascript
