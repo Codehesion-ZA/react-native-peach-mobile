@@ -308,7 +308,7 @@ Validate the card parameters and create a transaction object. Returns a promise 
 
 #### `submitTransaction()`
 ```javascript
-submitTransaction(transaction: TransactionObject)
+static submitTransaction(transaction: TransactionObject, mode: TransactionMode)
 ```
 
 Submit the transaction to peach payments. Returns a promise that will resolve to true if the transaction was successfully submitted or will reject if there was an error. 
@@ -316,9 +316,25 @@ A 3D secure modal will automatically open if 3D secure is required, once the use
 
 ##### Parameters:
 
-| Name            | Type              | Required | Description                                                                                                                             |
-| --------------- | ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------|
-| transaction     | TransactionObject | No       | If you have not passed any card props to the component you can pass a transaction object created by the `createTransaction()` function. |
+| Name            | Type              | Required  | Description                                                       |
+| --------------- | ----------------- | --------- | ------------------------------------------------------------------|
+| transaction     | TransactionObject | Yes       | Transaction object created by the `createTransaction()` function. |
+| mode            | TransactionMode   | Yes       | Transaction mode, 'live' or 'test'.                               |
+
+#### `submitRegistration()`
+```javascript
+static submitTransaction(transaction: TransactionObject, mode: TransactionMode)
+```
+
+Submit the card registration to peach payments. Returns a promise that will resolve to true if the transaction was successfully submitted or will reject if there was an error. 
+A 3D secure modal will automatically open if 3D secure is required, once the user has submitted the 3D secure form the modal will again automatically close and the promise will resolve.
+
+##### Parameters:
+
+| Name            | Type              | Required  | Description                                                       |
+| --------------- | ----------------- | --------- | ------------------------------------------------------------------|
+| transaction     | TransactionObject | Yes       | Transaction object created by the `createTransaction()` function. |
+| mode            | TransactionMode   | Yes       | Transaction mode, 'live' or 'test'.                               |
  
 #### `getResourcePath()`
 ```javascript

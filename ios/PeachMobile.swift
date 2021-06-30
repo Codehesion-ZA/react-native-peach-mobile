@@ -104,6 +104,37 @@ class PeachMobile: RCTEventEmitter {
         }
     }
 
+    @objc func submitRegistration(_ transactionDict: Dictionary<String, String>, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        if (self.provider == nil) {
+            reject("", "Provider not set. This probably means you forgot to initialize the provider.", NSError(domain: "", code: 6001, userInfo: nil))
+            return
+        }
+
+        do {
+            let params = try OPPCardPaymentParams(
+                checkoutID: transactionDict["checkoutID"]!,
+                paymentBrand: transactionDict["paymentBrand"]!,
+                holder: transactionDict["cardHolder"]!,
+                number: transactionDict["cardNumber"]!,
+                expiryMonth: transactionDict["cardExpiryMonth"]!,
+                expiryYear: transactionDict["cardExpiryYear"]!,
+                cvv: transactionDict["cardCVV"]!
+            );
+            params.isTokenizationEnabled = true
+            
+            let transaction = OPPTransaction(paymentParams: params)
+            
+            self.provider!.submitTransaction(transaction, completionHandler: { (completedTransaction, error) in
+                DispatchQueue.main.async {
+                    self.handleTransactionSubmission(transaction: completedTransaction, error: error, resolver: resolve, rejecter: reject)
+                }
+            })
+        } catch let error {
+            reject(String((error as NSError).code) , error.localizedDescription, error)
+            return
+        }
+    }
+
     @objc func getResourcePath(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         guard let checkoutID = self.transaction?.paymentParams.checkoutID else {
             reject("", "Checkout ID is invalid", NSError(domain: "", code: 200, userInfo: nil))

@@ -177,6 +177,33 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
     }
 
     @ReactMethod
+    public void submitRegistration(ReadableMap transactionMap, Promise promise) {
+        if (binder == null) {
+            promise.reject("", "Provider not set. This probably means you forgot to initialize the provider.", new Error("Provider not set"));
+            return;
+        }
+
+        try {
+            CardPaymentParams paymentParams = new CardPaymentParams(
+                    transactionMap.getString("checkoutID"),
+                    transactionMap.getString("paymentBrand"),
+                    transactionMap.getString("cardNumber"),
+                    transactionMap.getString("cardHolder"),
+                    transactionMap.getString("cardExpiryMonth"),
+                    transactionMap.getString("cardExpiryYear"),
+                    transactionMap.getString("cardCVV")
+            );
+            paymentParams.setTokenizationEnabled(true);
+            Transaction transaction = new Transaction(paymentParams);
+            transactionListenerPromise = promise;
+            binder.submitTransaction(transaction);
+        } catch (PaymentException error) {
+            promise.reject(error.getError().getErrorCode().toString(), error.getLocalizedMessage(), error);
+        }
+
+    }
+
+    @ReactMethod
     public void getResourcePath(Promise promise) {
         if (this.transaction.getPaymentParams().getCheckoutId() == null) {
             promise.reject("", "Checkout ID is invalid", new Error("Checkout ID is invalid"));
