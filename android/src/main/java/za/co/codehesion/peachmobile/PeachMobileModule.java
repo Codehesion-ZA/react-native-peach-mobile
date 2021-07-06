@@ -193,10 +193,10 @@ public class PeachMobileModule extends ReactContextBaseJavaModule implements Ser
                     transactionMap.getString("cardExpiryYear"),
                     transactionMap.getString("cardCVV")
             );
-            paymentParams.setTokenizationEnabled(true);
+            paymentParams.setShopperResultUrl(this.urlScheme + "://result");
             Transaction transaction = new Transaction(paymentParams);
             transactionListenerPromise = promise;
-            binder.submitTransaction(transaction);
+            binder.registerTransaction(transaction);
         } catch (PaymentException error) {
             promise.reject(error.getError().getErrorCode().toString(), error.getLocalizedMessage(), error);
         }

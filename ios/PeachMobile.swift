@@ -13,12 +13,12 @@ let AsyncPaymentCompletedNotificationKey = "AsyncPaymentCompletedNotificationKey
 
 @objc(PeachMobile)
 class PeachMobile: RCTEventEmitter {
-    
+
     var provider: OPPPaymentProvider?
     var transaction: OPPTransaction?
     var safariVC: SFSafariViewController?
     var urlScheme: String = ""
-    
+
     @objc func initPaymentProvider(_ mode: String) {
         var oppProviderMode: OPPProviderMode
         if (mode == "live") {
@@ -28,11 +28,11 @@ class PeachMobile: RCTEventEmitter {
         }
         self.provider = OPPPaymentProvider.init(mode: oppProviderMode)
     }
-    
+
     @objc func setUrlScheme(_ urlScheme: String) {
         self.urlScheme = urlScheme
     }
-    
+
     @objc func createTransaction(_ checkoutID: String, paymentBrand: String, cardHolder: String, cardNumber: String, cardExpiryMonth: String, cardExpiryYear: String, cardCVV: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         if (self.urlScheme == "") {
             reject("", "ShopperResultURL is nil. This probably means you forgot to set it.", NSError(domain: "", code: 3001, userInfo: nil))
@@ -120,11 +120,10 @@ class PeachMobile: RCTEventEmitter {
                 expiryYear: transactionDict["cardExpiryYear"]!,
                 cvv: transactionDict["cardCVV"]!
             );
-            params.isTokenizationEnabled = true
-            
+            params.shopperResultURL = self.urlScheme + "://payment"
             let transaction = OPPTransaction(paymentParams: params)
-            
-            self.provider!.submitTransaction(transaction, completionHandler: { (completedTransaction, error) in
+
+            self.provider!.register(transaction, completionHandler: { (completedTransaction, error) in
                 DispatchQueue.main.async {
                     self.handleTransactionSubmission(transaction: completedTransaction, error: error, resolver: resolve, rejecter: reject)
                 }
@@ -203,19 +202,19 @@ class PeachMobile: RCTEventEmitter {
             reject(String((error! as NSError).code), error?.localizedDescription ?? "Invalid transaction.", error)
         }
     }
-    
+
     @objc func didReceiveAsynchronousPaymentCallback() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: AsyncPaymentCompletedNotificationKey), object: nil)
         sendEvent(withName: "asynchronousPaymentCallback", body: nil)
     }
-    
+
     override func supportedEvents() -> [String]! {
         return ["asynchronousPaymentCallback"]
     }
-    
+
     @objc
     override static func requiresMainQueueSetup() -> Bool {
         return true
     }
-    
+
 }
