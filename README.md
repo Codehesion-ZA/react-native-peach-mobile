@@ -1,3 +1,5 @@
+# This package is not actively supported by us, PRs are welcome to upgrade it if anyone needs or fork it.
+
 # Peach Payments Mobile for React Native
 
 <span class="badge-npmdownloads"><a href="https://npmjs.org/package/react-native-peach-mobile" title="View this project on NPM"><img alt="npm" src="https://img.shields.io/npm/v/react-native-peach-mobile" alt="NPM downloads"></a></span>
